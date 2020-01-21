@@ -13,8 +13,8 @@ body {
     margin: 45px auto;
     width: 375px;
     height: 812px;
-    background-color: #ebf1fa;
-    background-image: linear-gradient(60deg, #ebf1fa 1%, #ebf1fa 100%);
+    background-color: #fff;
+    /*background-image: linear-gradient(60deg, #ebf1fa 1%, #ebf1fa 100%);*/
     border-radius: 40px;
     box-shadow: 0px 0px 0px 11px #1f1f1f, 0px 0px 0px 13px #191919, 0px 0px 0px 20px #111;
 }
@@ -87,8 +87,15 @@ body {
     display: none;
 }
 .content {
-    padding: 3em 0.5em 0em 0.5em;
+    #padding: 3em 0.5em 0em 0.5em;
     overflow-y: auto;
     height: 94%;
-
 }
+
+.icontent {
+    padding: 2em 0.5em 1em 0.5em;
+    width:100%;
+    height:100%;
+    border-width: 0px !important;
+}
+

@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Frame from "./Frame"
+
 
 function App() {
     const [text, setText] = useState("");
@@ -33,8 +35,9 @@ function App() {
                         <div className="iphone-x">
                             <i>Speaker</i>
                             <b>Camera</b>
-                            <div className="content" dangerouslySetInnerHTML={{__html: html || "" }}>
-                            </div>
+                                <Frame className="content">
+                                    <p dangerouslySetInnerHTML={{__html: html || "" }}/>
+                                </Frame>
                         </div>
                     </Col>
                 </Row>
