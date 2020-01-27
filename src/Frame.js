@@ -8,50 +8,83 @@ export default class Frame extends Component {
     // }
 
     render() {
-        return (<iframe title="html-preview" className="icontent"/>);
+        return (<iframe id="iframe" title="html-preview" className="icontent"/>);
     }
 
     renderFrameContents() {
         let doc = ReactDOM.findDOMNode(this).contentDocument;
+        doc.body.innerHTML = "";
+
         if(doc.readyState === 'complete') {
+            // if(doc.body.getElementsByClassName("scene").length > 0) {
+            //     doc.body.removeChild(doc.body.getElementsByClassName("scene")[0]);
+            // }
+
+            // let scene = doc.createElement("div");
+            // scene.className = "scene";
+            // doc.body.append(scene);
+
+            // let iframe = document.getElementById("iframe");
+            //clear the old script and styles
+            let existingScripts = doc.body.getElementsByTagName("script");
+            console.log('existing scripts leng' + existingScripts.length);
+            for (let i = existingScripts.length; i--; i === 0) {
+                doc.body.removeChild(existingScripts[i]);
+            }
+
+                // doc.body.innerHTML = "";
+            const scriptJQuery = document.createElement("script");
+            scriptJQuery.src = "js/icontent/jquery.min.js";
+            scriptJQuery.async = false;
+            doc.body.appendChild(scriptJQuery);
+
+            const scriptPopper = document.createElement("script");
+            scriptPopper.src = "js/icontent/popper.min.js";
+            scriptPopper.async = false;
+            doc.body.appendChild(scriptPopper);
+
+            const scriptBootstrap = document.createElement("script");
+            scriptBootstrap.src = "js/icontent/bootstrap.min.js";
+            scriptBootstrap.async = false;
+            doc.body.appendChild(scriptBootstrap);
+
+            const script = document.createElement("script");
+            script.src = "js/icontent/custom.js";
+            script.async = false;
+            doc.body.appendChild(script);
+            //
+            // let existingScripts = iframe.contentDocument.documentElement.getElementsByTagName("script");
+            // for (let i = existingScripts.length; i--; i === 0) {
+            //     iframe.contentDocument.documentElement.removeChild(existingScripts[i]);
+            // }
+
+            // for (let existingScript in existingScripts) {
+            //     iframe.contentDocument.documentElement.removeChild(existingScripts[0]);
+            // }
+            // iframe.contentDocument.documentElement.innerHTML ="";
+
             ReactDOM.render(
                 <>
                     <link rel="stylesheet" href="css/icontent/bootstrap.min.css" media="screen"/>
                     <link rel="stylesheet" href="css/icontent/icontent.css" media="screen"/>
                 </>, doc.head);
 
+            let buffer = doc.createElement("div");
+
+            ReactDOM.render(<>{ this.props.children }</>, buffer);
 
 
-            ReactDOM.render(<>
-                {this.props.children}
-            </>, doc.body);
+            doc.body.appendChild(buffer);
 
             console.log("ready state COMPLETE");
 
-            const scriptJQuery = document.createElement("script");
-            scriptJQuery.src = "js/icontent/jquery.min.js";
-            scriptJQuery.async = false;
-            document.body.appendChild(scriptJQuery);
 
-            const scriptPopper = document.createElement("script");
-            scriptPopper.src = "js/icontent/popper.min.js";
-            scriptPopper.async = false;
-            document.body.appendChild(scriptPopper);
-
-            const scriptBootstrap = document.createElement("script");
-            scriptBootstrap.src = "js/icontent/bootstrap.min.js";
-            scriptBootstrap.async = false;
-            document.body.appendChild(scriptBootstrap);
-
-            const script = document.createElement("script");
-            script.src = "js/icontent/custom.js";
-            script.async = false;
-            document.body.appendChild(script);
 
             // doc.dispatchEvent(new Event('load'));
             // window.dispatchEvent(new Event('load'));
             // dispatchEvent(new Event('load'));
         } else {
+            debugger;
             setTimeout(this.renderFrameContents, 0);
         }
     }

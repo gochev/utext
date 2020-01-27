@@ -1,6 +1,9 @@
+
+
 body {
     scrollbar-width:none;
     overflow: -moz-scrollbars-none;
+    background-color: #fff;
 }
 
 body::-webkit-scrollbar-track {
@@ -13,3 +16,4 @@ body::-webkit-scrollbar {
 .row {
     justify-content: center;
 }
+
