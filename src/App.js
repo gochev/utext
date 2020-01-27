@@ -9,9 +9,9 @@ import Row from "react-bootstrap/Row";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
-import Button from "react-bootstrap/Button";
 import Preview from "./Preview";
 
+const parse = require('./pegjs');
 
 function App() {
     const [text, setText] = useState("");
@@ -24,10 +24,20 @@ function App() {
         minHeight:"875px"
     };
 
-    let onTextChange = e => {
-            setText(e.target.value);
-            setHtml(e.target.value);
+    let onTextChange = (e) => {
+        setText(e.target.value);
+        //parse
+        // parser.parse();
+        try {
+            // console.log(parse.parse(e.target.value).map(e => e.html));
+            setHtml(parse.parse(e.target.value).map(e => e.html).join(""));
+            // setHtml(e.target.value);
+        } catch {
+
+        }
+        // setHtml(parse.parse(value).parse);
     };
+
 
     let deviceControls = null;
     if(previewDevice === "iphone-x") {
@@ -70,34 +80,28 @@ function App() {
             </Container>
             <div className="splitContainer">
                 <Split>
-                    <textarea style={inputTextStyle} onChange={onTextChange} value={text}/>
+                    <textarea className="codeeditor" style={inputTextStyle} onChange={onTextChange} value={text}/>
                     <div>
                         <div className={previewDevice}>
                             {deviceControls}
                             <Preview className="content">
+
+                                <div className="container">
+
+
+                                    <div className="row">
+
+                                        <div className="col-lg-12">
                                 <p dangerouslySetInnerHTML={{__html: html || "" }}/>
+                                </div>
+                                    </div>
+                                </div>
                             </Preview>
                         </div>
                     </div>
                 </Split>
            </div>
 
-            {/*<header className="App-header">*/}
-            {/*  <img src={logo} className="App-logo" alt="logo" />*/}
-            {/*  <p>*/}
-            {/*    Edit <code>src/App.js</code> and save to reload.*/}
-            {/*  </p>*/}
-            {/*  <a*/}
-            {/*    className="App-link"*/}
-            {/*    href="https://reactjs.org"*/}
-            {/*    target="_blank"*/}
-            {/*    rel="noopener noreferrer"*/}
-            {/*  >*/}
-            {/*    Learn React*/}
-            {/*  </a>*/}
-            {/*</header>*/}
-
-            <Button variant="primary"> test </Button>
         </div>
     );
 }

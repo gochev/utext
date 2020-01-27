@@ -1,5 +1,10 @@
-textarea {
-    border-radius: 555px 25px 15px 5px/1px 5px 35px 555px !important;
+
+
+.codeeditor{
+    /*height : 100%;*/
+    box-shadow: 0 0.1em 1em 0 rgba(0, 0, 0, 0.4);
+    margin: 1em 1em 1em 1em;
+    border: 0;
 }
 
 

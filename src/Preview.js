@@ -23,7 +23,6 @@ export default class Preview extends Component {
 
             doc.body.appendChild(buffer);
 
-            console.log("ready state COMPLETE");
 
         } else {
             setTimeout(this.renderFrameContents, 0);
@@ -31,12 +30,10 @@ export default class Preview extends Component {
     }
 
     componentDidUpdate(){
-        console.log("update");
         this.renderFrameContents();
     }
 
     componentDidMount() {
-        console.log("mount");
         this.renderFrameContents();
     }
 
