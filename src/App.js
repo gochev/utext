@@ -1,15 +1,16 @@
 import React, {useState} from 'react';
 import './App.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Preview from "./Preview";
 import Nav from "react-bootstrap/Nav";
+import Split from 'react-split'
+import Container from "react-bootstrap/Container";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
+import Button from "react-bootstrap/Button";
+import Preview from "./Preview";
 
 
 function App() {
@@ -66,18 +67,21 @@ function App() {
                         </ButtonToolbar>
                     </Col>
                 </Row>
-                <Row>
-                    <Col><textarea style={inputTextStyle} onChange={onTextChange} value={text}/></Col>
-                    <Col>
-                        <div className={previewDevice}>
-                                {deviceControls}
-                                <Preview className="content">
-                                    <p dangerouslySetInnerHTML={{__html: html || "" }}/>
-                                </Preview>
-                        </div>
-                    </Col>
-                </Row>
             </Container>
+            <div className="splitContainer">
+                <Split>
+                    <textarea style={inputTextStyle} onChange={onTextChange} value={text}/>
+                    <div>
+                        <div className={previewDevice}>
+                            {deviceControls}
+                            <Preview className="content">
+                                <p dangerouslySetInnerHTML={{__html: html || "" }}/>
+                            </Preview>
+                        </div>
+                    </div>
+                </Split>
+           </div>
+
             {/*<header className="App-header">*/}
             {/*  <img src={logo} className="App-logo" alt="logo" />*/}
             {/*  <p>*/}

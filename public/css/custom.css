@@ -138,8 +138,12 @@ body {
     margin-top: 1em;
 }
 
+.browser-mockup .icontent {
+    padding: 0 0 0 0 !important;
+}
 
-/*content iframe part*/
+
+    /*content iframe part*/
 
 .content::-webkit-scrollbar-track {
     display: none;
@@ -148,7 +152,6 @@ body {
     display: none;
 }
 .content {
-    #padding: 3em 0.5em 0em 0.5em;
     overflow-y: auto;
     height: 94%;
 }
@@ -160,3 +163,14 @@ body {
     border-width: 0px !important;
 }
 
+.splitContainer > div {
+    display: flex;
+    flex-direction: row;
+}
+
+.gutter.gutter-horizontal {
+    cursor: col-resize;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+}
