@@ -140,9 +140,13 @@ body {
 /* Custom code for the demo */
 
 .browser-mockup {
-    margin-top: 1em;
+    margin: 1em 1.5em 1em 0em;
+    height: 60%;
 }
 
+.blank-mockup {
+    height: 100%;
+}
 .browser-mockup .icontent {
     padding: 0 0 0 0 !important;
 }

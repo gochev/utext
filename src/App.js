@@ -11,7 +11,7 @@ import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import Preview from "./Preview";
 
-const parse = require('./pegjs');
+const parse = require('./parser/gr');
 
 function App() {
     const [text, setText] = useState("");
@@ -33,9 +33,8 @@ function App() {
             setHtml(parse.parse(e.target.value).map(e => e.html).join(""));
             // setHtml(e.target.value);
         } catch {
-
+            //todo do something with the errors
         }
-        // setHtml(parse.parse(value).parse);
     };
 
 
@@ -55,7 +54,7 @@ function App() {
                     <Nav.Link href="/home">Home</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link eventKey="link-1">Try</Nav.Link>
+                    <Nav.Link href="/wireframe" eventKey="link-1">Try</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                     <Nav.Link eventKey="disabled" disabled>
@@ -72,14 +71,14 @@ function App() {
                             <ToggleButtonGroup type="radio" name="options" defaultValue={1}>
                                 <ToggleButton value={1} onChange={() => {setPreviewDevice("iphone-x")}}>Phone</ToggleButton>
                                 <ToggleButton value={2} onChange={() => {setPreviewDevice("browser-mockup with-url")}}>Browser</ToggleButton>
-                                <ToggleButton value={3} onChange={() => {setPreviewDevice("")}}>None</ToggleButton>
+                                <ToggleButton value={3} onChange={() => {setPreviewDevice("blank-mockup")}}>None</ToggleButton>
                             </ToggleButtonGroup>
                         </ButtonToolbar>
                     </Col>
                 </Row>
             </Container>
             <div className="splitContainer">
-                <Split>
+                <Split sizes={[40, 60]}>
                     <textarea className="codeeditor" style={inputTextStyle} onChange={onTextChange} value={text}/>
                     <div>
                         <div className={previewDevice}>
