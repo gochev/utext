@@ -276,9 +276,11 @@ function peg$parse(input, options) {
       peg$c84 = peg$literalExpectation("]", false),
       peg$c85 = function(items, options) {
       	var options = parseOptions(options, ` class='pagination'`)
+          var leftHTML = `<li class='page-item disabled'><a class='page-link' href='#'>&laquo;</a></li>\n`;
+          var rightHTML =  `<li class='page-item'><a class='page-link' href='#'>&raquo;</a></li>\n`
       	return {
           	type: 'pager',
-              html: `<ul `.concat(options, `>\n`, items.map(item=>item.html).join(""), `</ul>`),
+              html: `<ul `.concat(options, `>\n`,leftHTML, items.map(item=>item.html).join(""), rightHTML, `</ul>`),
               options: options
           }
       },
