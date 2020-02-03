@@ -7,6 +7,9 @@ import Split from "react-split";
 import AceEditor from "react-ace";
 import Preview from "../Preview";
 import Button from "react-bootstrap/Button";
+import SaveGistModalDialog from "./SaveGistModalDialog";
+import Toast from "react-bootstrap/Toast";
+import LoadGistModalDialog from "./LoadGistModalDialog";
 
 const parse = require('../parser/grammar');
 
@@ -37,6 +40,10 @@ export default function UTextEditor () {
 
     let onChange = (newValue) => {
         setText(newValue);
+        updateHtmlPreview(newValue);
+    };
+
+    let updateHtmlPreview = (newValue) => {
         try {
             newValue += "\n";
             let newHtml = parse.parse(newValue).map(e => e.html).join("");
@@ -45,7 +52,100 @@ export default function UTextEditor () {
         } catch {
             //todo do something with the errors
         }
-    }
+    };
+
+    const [gistMessage, setGistMessage] = useState("");
+    const [showGistMessage, setShowGistMessage] = useState(false);
+    const toggleShowGistMessage = () => setShowGistMessage(!showGistMessage);
+
+    let handleCreate = (token) => {
+        let payload = JSON.stringify({
+            "description": "utext snippet",
+            "public": true,
+            "files": {
+                "utext_snippet": {
+                    "content": text
+                }
+            }
+        });
+
+        fetch("https://api.github.com/gists",
+            {
+                method: 'POST',
+                headers: {
+                    "Content-Type" : "application/json",
+                    "Authorization": `Basic ${token}`
+                },
+                body: payload
+            }).then(function (response) {
+            // console.log(url + " -> " + response.ok);
+            if (response.ok) {
+                return response.text();
+            } else {
+                return 'Failed to create gist ' + response.status + ':' + response.statusText;
+            }
+        }).then(function (data) {
+            let newGistURL = null;
+            try {
+                let jsonData = JSON.parse(data);
+                newGistURL = jsonData.url;
+                setGistMessage(`Gist created, you can view it <a href='${newGistURL}' target='_blank'>here!</a> 
+                        You can view all your saved gists at <a href="https://gist.github.com/${jsonData.owner.login}" target="_blank">https://gist.github.com/${jsonData.owner.login}<a/>`);
+            } catch {
+                setGistMessage("Unable to create gist " + data);
+            }
+            setShowGistMessage(true);
+        }).catch(function (err) {
+            setGistMessage("Failed to create gist \n" + err.message);
+            setShowGistMessage(true);
+        });
+
+    };
+
+    let handleGistLoad = (url) => {
+        if(url){
+            fetch(url, {method: 'GET'})
+                .then(function (response) {
+                    // console.log(url + " -> " + response.ok);
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        return 'Failed to get gist';
+                    }
+                }).then(function (data) {
+                console.log("data: ", data);
+                setText(data);
+                updateHtmlPreview(data);
+                setGistMessage("Loading gist successful");
+            }).catch(function (err) {
+                setGistMessage("Failed to load " + url + err.message);
+            });
+        } else {
+            setGistMessage("Failed to load gist, please enter URL to preview ");
+        }
+        setShowGistMessage(true);
+    };
+
+    let onLoadFromGist = () => {
+        let gistURL = prompt("Enter the gist URL");
+        if(gistURL) {
+            fetch(gistURL, {method: 'GET'})
+                .then(function (response) {
+                // console.log(url + " -> " + response.ok);
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    return 'Failed to get gist';
+                }
+            }).then(function (data) {
+                console.log("data: ", data);
+                setText(data);
+                updateHtmlPreview(data);
+            }).catch(function (err) {
+                alert("failed to load \n" + gistURL + "\n" + err.message);
+            });
+        }
+    };
 
     let deviceControls = null;
     if(previewDevice === "iphone-x") {
@@ -60,7 +160,22 @@ export default function UTextEditor () {
         <>
             <Container fluid={true}>
                 <Row>
-                    <Col> Type your uTeXt bellow, it looks like markdown but on steroids. <br/> If you want to learn more <Button variant="info">?</Button> </Col>
+                    <Col>
+                        Type your uTeXt bellow, it looks like markdown but on steroids. <br/>
+                        If you want to learn more <Button variant="info">?</Button>
+                        <Toast style={{
+                                position: 'fixed',
+                                top: 15,
+                                right: 15,
+                                zIndex:100
+                            }} show={showGistMessage} onClose={toggleShowGistMessage}>
+                            <Toast.Header>
+                                <strong className="mr-auto">Notification</strong>
+                                <small>1 min ago</small>
+                            </Toast.Header>
+                            <Toast.Body><p dangerouslySetInnerHTML={{__html: gistMessage || "" }}/></Toast.Body>
+                        </Toast>
+                    </Col>
                     <Col>
                         {/*Frame: */}
                         {/*<ButtonToolbar>*/}
@@ -71,8 +186,9 @@ export default function UTextEditor () {
                         {/*    </ToggleButtonGroup>*/}
                         {/*</ButtonToolbar>*/}
                         <ButtonToolbar>
-                            <Button variant="primary">Export as Image</Button>
-                            <Button variant="secondary">Export as Gist (Requires Github Login)</Button>
+                            <SaveGistModalDialog title="Save as gist" handleCreate={handleCreate}/>
+                            <LoadGistModalDialog title="Load gist" handleGistLoad={handleGistLoad}/>
+                            <Button variant="secondary" onClick = {onLoadFromGist}>Load from gist</Button>
                         </ButtonToolbar>
                     </Col>
                 </Row>

@@ -5,7 +5,7 @@ export default function Navbar () {
     return (
         <Nav variant="pills" defaultActiveKey="/home">
             <Nav.Item>
-                <Nav.Link href="/home">UText</Nav.Link>
+                <Nav.Link href="/home">UteXt - the first step to UX</Nav.Link>
             </Nav.Item>
             {/*<Nav.Item>*/}
             {/*    <Nav.Link href="/wireframe" eventKey="link-1">Try</Nav.Link>*/}
