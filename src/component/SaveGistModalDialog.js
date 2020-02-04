@@ -6,13 +6,15 @@ import Form from "react-bootstrap/Form";
 export default function SaveGistModalDialog (props) {
     const [show, setShow] = useState(false);
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState(sessionStorage.getItem("username") ? sessionStorage.getItem("username") :'');
+    const [password, setPassword] = useState(sessionStorage.getItem("password") ?sessionStorage.getItem("password") : '');
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const handleCreate = () => {
+        sessionStorage.setItem("username", username);
+        sessionStorage.setItem("password", password);
         setShow(false);
         let token = username + ":" + password;
         let hash = btoa(token);
@@ -36,7 +38,7 @@ export default function SaveGistModalDialog (props) {
                             <Form.Label>GitHub username</Form.Label>
                             <Form.Control type="username" placeholder="Enter your username, without the @ ;)" value={username} onChange={ e => setUsername(e.target.value)}/>
                             <Form.Text className="text-muted">
-                                This is open source and is all client side... there is no mambo jambo ;)
+                                This is open source and is all client side... there is no mambo jambo ;) ... just basic auth
                             </Form.Text>
                         </Form.Group>
 

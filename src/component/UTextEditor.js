@@ -6,10 +6,11 @@ import Container from "react-bootstrap/Container";
 import Split from "react-split";
 import AceEditor from "react-ace";
 import Preview from "../Preview";
-import Button from "react-bootstrap/Button";
 import SaveGistModalDialog from "./SaveGistModalDialog";
 import Toast from "react-bootstrap/Toast";
 import LoadGistModalDialog from "./LoadGistModalDialog";
+import HelpModalDialog from "./HelpModalDialog";
+import Button from "react-bootstrap/Button";
 
 const parse = require('../parser/grammar');
 
@@ -126,27 +127,6 @@ export default function UTextEditor () {
         setShowGistMessage(true);
     };
 
-    let onLoadFromGist = () => {
-        let gistURL = prompt("Enter the gist URL");
-        if(gistURL) {
-            fetch(gistURL, {method: 'GET'})
-                .then(function (response) {
-                // console.log(url + " -> " + response.ok);
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    return 'Failed to get gist';
-                }
-            }).then(function (data) {
-                console.log("data: ", data);
-                setText(data);
-                updateHtmlPreview(data);
-            }).catch(function (err) {
-                alert("failed to load \n" + gistURL + "\n" + err.message);
-            });
-        }
-    };
-
     let deviceControls = null;
     if(previewDevice === "iphone-x") {
         deviceControls = (<>
@@ -156,19 +136,23 @@ export default function UTextEditor () {
         );
     }
 
+    let handleExportImage = () =>
+    {
+        
+    };
     return (
         <>
             <Container fluid={true}>
                 <Row>
                     <Col>
                         Type your uTeXt bellow, it looks like markdown but on steroids. <br/>
-                        If you want to learn more <Button variant="info">?</Button>
+                        If you want to learn more about the syntax <HelpModalDialog/>
                         <Toast style={{
                                 position: 'fixed',
                                 top: 15,
                                 right: 15,
                                 zIndex:100
-                            }} show={showGistMessage} onClose={toggleShowGistMessage}>
+                            }} show={showGistMessage} onClose={toggleShowGistMessage} delay={3000} autohide>
                             <Toast.Header>
                                 <strong className="mr-auto">Notification</strong>
                                 <small>1 min ago</small>
@@ -188,7 +172,7 @@ export default function UTextEditor () {
                         <ButtonToolbar>
                             <SaveGistModalDialog title="Save as gist" handleCreate={handleCreate}/>
                             <LoadGistModalDialog title="Load gist" handleGistLoad={handleGistLoad}/>
-                            <Button variant="secondary" onClick = {onLoadFromGist}>Load from gist</Button>
+                            <Button variant="success" onClick={handleExportImage}>Export as Image</Button>
                         </ButtonToolbar>
                     </Col>
                 </Row>

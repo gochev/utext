@@ -11,13 +11,20 @@ export default function LoadGistModalDialog (props) {
 
     const [gistRawUrl, setGistRawUrl] = useState('');
 
+    const [moreHelpDisplay, setMoreHelpDisplay] = useState('none');
+
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const handleGistLoad = () => {
         setShow(false);
-        props.handleGistLoad(gistRawUrl);
+        let urlToPreview = gistRawUrl;
+        if(gistRawUrl.indexOf("gist.github.com") !== -1) {
+            urlToPreview = gistRawUrl.replace("gist.github.com","gist.githubusercontent.com");
+        }
+        props.handleGistLoad(urlToPreview);
     };
+
 
     return (
         <>
@@ -32,17 +39,31 @@ export default function LoadGistModalDialog (props) {
                     You must enter a URL to a gist that contains UteXt that we can preview.
                     <br/>
                     If you do not remember your URLs just go to <a href="https://gist.github.com/your-user-name" target="_blank">https://gist.github.com/your-user-name</a> and grab the one !
-                    <Container>
+                    <Button variant="outline-info" onClick={
+                        () => {
+                            if(moreHelpDisplay === "none") {
+                                setMoreHelpDisplay("block");
+                            } else {
+                                setMoreHelpDisplay("none");
+                            }
+                        }}> More help ?</Button>
+                    <Container style={{display: moreHelpDisplay}}>
                         <Row>
-                            <Col sm={12}><img src="/images/gist-load-1.jpg" style={{maxWidth: 700}}/></Col>
+                            <Col sm={12}>
+                                Go to the <a href="https://gist.github.com/your-user-name" target="_blank">https://gist.github.com/your-user-name</a> <br/>
+                                <img src="/images/gist-load-1.jpg" style={{maxWidth: 700}}/>
+                            </Col>
                         </Row>
                         <Row>
-                            <Col sm={12}><img src="/images/gist-load-2.jpg" style={{maxWidth: 700}}/></Col>
+                            <Col sm={12}>
+                                Copy the RAW link to some gist
+                                <img src="/images/gist-load-2.jpg" style={{maxWidth: 700}}/>
+                            </Col>
                         </Row>
                     </Container>
                     <Form>
                         <Form.Group controlId="gistRawUrl">
-                            <Form.Label>Paste GitHub Gist Raw URL</Form.Label>
+                            <Form.Label>Paste Gist URL</Form.Label>
                             <Form.Control type="text" placeholder="https://gist...../raw" value={gistRawUrl} onChange={ e => setGistRawUrl(e.target.value)}/>
                             <Form.Text className="text-muted">
                                 You can also use someone else public gist URL.
