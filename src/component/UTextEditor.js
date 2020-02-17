@@ -6,11 +6,13 @@ import Container from "react-bootstrap/Container";
 import Split from "react-split";
 import AceEditor from "react-ace";
 import Preview from "../Preview";
-import SaveGistModalDialog from "./SaveGistModalDialog";
 import Toast from "react-bootstrap/Toast";
-import LoadGistModalDialog from "./LoadGistModalDialog";
 import HelpModalDialog from "./HelpModalDialog";
-import Button from "react-bootstrap/Button";
+import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
+import ToggleButton from "react-bootstrap/ToggleButton";
+import ShowHtmlCode from "./ShowHtmlCode";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Dropdown from "react-bootstrap/Dropdown";
 
 const parse = require('../parser/grammar');
 
@@ -20,11 +22,12 @@ export default function UTextEditor () {
     const [html, setHtml] = useState("");
 
     const [previewDevice, setPreviewDevice] = useState("iphone-x");
+    const [previewTheme, setPreviewTheme] = useState("sketch");
 
-    // const inputTextStyle = {
-    //     width:"100%",
-    //     minHeight:"875px"
-    // };
+    const inputTextStyle = {
+        width:"100%",
+        minHeight:"860px"
+    };
 
     // let onTextChange = (e) => {
     //     setText(e.target.value);
@@ -136,17 +139,13 @@ export default function UTextEditor () {
         );
     }
 
-    let handleExportImage = () =>
-    {
-        
-    };
     return (
         <>
             <Container fluid={true}>
                 <Row>
                     <Col>
-                        Type your uTeXt bellow, it looks like markdown but on steroids. <br/>
-                        If you want to learn more about the syntax <HelpModalDialog/>
+                        Type your uTeXt bellow, it is like markdown but on steroids. <br/>
+                        You want to learn more about the syntax <HelpModalDialog/>
                         <Toast style={{
                                 position: 'fixed',
                                 top: 15,
@@ -161,19 +160,44 @@ export default function UTextEditor () {
                         </Toast>
                     </Col>
                     <Col>
-                        {/*Frame: */}
-                        {/*<ButtonToolbar>*/}
-                        {/*    <ToggleButtonGroup type="radio" name="options" defaultValue={1}>*/}
-                        {/*        <ToggleButton value={1} onChange={() => {setPreviewDevice("iphone-x")}}>Phone</ToggleButton>*/}
-                        {/*        /!*<ToggleButton value={2} onChange={() => {setPreviewDevice("browser-mockup with-url")}}>Browser</ToggleButton>*!/*/}
-                        {/*        /!*<ToggleButton value={3} onChange={() => {setPreviewDevice("blank-mockup")}}>No Frame</ToggleButton>*!/*/}
-                        {/*    </ToggleButtonGroup>*/}
-                        {/*</ButtonToolbar>*/}
                         <ButtonToolbar>
-                            <SaveGistModalDialog title="Save as gist" handleCreate={handleCreate}/>
-                            <LoadGistModalDialog title="Load gist" handleGistLoad={handleGistLoad}/>
-                            <Button variant="success" onClick={handleExportImage}>Export as Image</Button>
+                            <ToggleButtonGroup type="radio" name="options" defaultValue={1}>
+                                <ToggleButton value={1} onChange={() => {setPreviewDevice("iphone-x")}}>Phone</ToggleButton>
+                                <ToggleButton value={2} onChange={() => {setPreviewDevice("browser-mockup with-url")}}>Browser</ToggleButton>
+                                <ToggleButton value={3} onChange={() => {setPreviewDevice("blank-mockup")}}>No Frame</ToggleButton>
+                            </ToggleButtonGroup>
                         </ButtonToolbar>
+                        <ButtonToolbar>
+                            {/*<SaveGistModalDialog title="Save as gist" handleCreate={handleCreate}/>*/}
+                            {/*<LoadGistModalDialog title="Load gist" handleGistLoad={handleGistLoad}/>*/}
+                            {/*<SaveAsModalDialog/>*/}
+                            <ShowHtmlCode html={html} theme={previewTheme}/>
+                            <DropdownButton id="dropdown-basic-button" title="Change Theme" onSelect={(e) => {setPreviewTheme(e.replace("#/",""))}}>
+                                <Dropdown.Item href="#/sketch">Default Theme(Sketch)</Dropdown.Item>
+                                <Dropdown.Item href="#/cerulean">Cerulean</Dropdown.Item>
+                                <Dropdown.Item href="#/cosmo">Cosmo</Dropdown.Item>
+                                <Dropdown.Item href="#/cyborg">Cyborg</Dropdown.Item>
+                                <Dropdown.Item href="#/darkly">Darkly</Dropdown.Item>
+                                <Dropdown.Item href="#/flatly">Flatly</Dropdown.Item>
+                                <Dropdown.Item href="#/journal">Journal</Dropdown.Item>
+                                <Dropdown.Item href="#/litera">Litera</Dropdown.Item>
+                                <Dropdown.Item href="#/lumen">Lumen</Dropdown.Item>
+                                <Dropdown.Item href="#/lux">Lux</Dropdown.Item>
+                                <Dropdown.Item href="#/materia">Materia</Dropdown.Item>
+                                <Dropdown.Item href="#/minty">Minty</Dropdown.Item>
+                                <Dropdown.Item href="#/pulse">Pulse</Dropdown.Item>
+                                <Dropdown.Item href="#/sandstone">Sandstone</Dropdown.Item>
+                                <Dropdown.Item href="#/simplex">Simplex</Dropdown.Item>
+                                <Dropdown.Item href="#/slate">Slate</Dropdown.Item>
+                                <Dropdown.Item href="#/solar">Solar</Dropdown.Item>
+                                <Dropdown.Item href="#/spacelab">Spacelab</Dropdown.Item>
+                                <Dropdown.Item href="#/superhero">Superhero</Dropdown.Item>
+                                <Dropdown.Item href="#/united">United</Dropdown.Item>
+                                <Dropdown.Item href="#/yeti">Yeti</Dropdown.Item>
+
+                            </DropdownButton>
+                        </ButtonToolbar>
+
                     </Col>
                 </Row>
             </Container>
@@ -184,7 +208,7 @@ export default function UTextEditor () {
                         placeholder=""
                         mode="markdown"
                         theme="github"
-                        className="codeeditor"
+                        className="code-editor" style={inputTextStyle}
                         name="codeeditor"
                         onChange={onChange}
                         fontSize={13}
@@ -203,13 +227,21 @@ export default function UTextEditor () {
                     <div>
                         <div className={previewDevice}>
                             {deviceControls}
-                            <Preview className="content">
+                            <Preview className="content" theme={previewTheme}>
                                 <div className="container">
-                                    <div className="row">
-                                        <div className="col-xl-12">
+                                {/*    <div className="row">*/}
+                                {/*        <div className="col">*/}
                                             <p dangerouslySetInnerHTML={{__html: html || "" }}/>
-                                        </div>
-                                    </div>
+                                {/*        </div>*/}
+                                {/*        <div className="col">*/}
+                                {/*            <p dangerouslySetInnerHTML={{__html: html || "" }}/>*/}
+                                {/*        </div>*/}
+                                {/*    </div>*/}
+                                {/*</div>*/}
+                                {/*<div className="row">*/}
+                                {/*    <div className="col-sm-10">*/}
+                                {/*        <p dangerouslySetInnerHTML={{__html: html || "" }}/>*/}
+                                {/*    </div>*/}
                                 </div>
                             </Preview>
                         </div>

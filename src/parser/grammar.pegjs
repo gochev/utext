@@ -533,7 +533,7 @@ FormEnd
 CardStart
  = '---' ('-'+)? text:(!'-' PlainText)+ '---' ('-'+)? options:Options? tooltip:Tooltip? Space? {
  	text = flatText(text);
-    options = parseOptions(options, `class='card border-primary mb-3' style='max-width: 20rem;'`);
+    options = parseOptions(options, `class='card border-primary mb-3'`);
     options = buildOptions(options, tooltip);
  	return {
     	type: 'card-start',

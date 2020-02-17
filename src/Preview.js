@@ -3,41 +3,62 @@ import ReactDOM from 'react-dom';
 
 
 export default class Preview extends Component {
-    // constructor(props) {
-    //     super(props);
-    // }
+    constructor(props) {
+        super(props);
+    }
 
     render() {
-        return (<iframe id="iframe" title="html-preview" src="preview.html" className="icontent"/>);
+        let iframeClassName = "icontent";
+        if (this.props.additionalClasses) {
+            iframeClassName += " " + this.props.additionalClasses;
+        }
+        return (<iframe id="iframe" title="html-preview" src="preview.html" className={iframeClassName} scrolling={this.props.scrolling}/>);
     }
 
     renderFrameContents() {
-        let doc = ReactDOM.findDOMNode(this).contentDocument;
-        doc.body.innerHTML = "";
+        console.log("renderFrameContents");
+        try {
+            let doc = ReactDOM.findDOMNode(this).contentDocument;
+            doc.body.innerHTML = "";
 
-        if(doc.readyState === 'complete') {
+            if (doc.readyState === 'complete') {
 
-            let buffer = doc.createElement("div");
-
-            ReactDOM.render(<>{ this.props.children }</>, buffer);
-
-            doc.body.appendChild(buffer);
-
-            let existingScripts = doc.body.getElementsByTagName("script");
-            console.log('existing scripts leng' + existingScripts.length);
-            for (let i = existingScripts.length; i--; i === 0) {
-                if(existingScripts[i].src === "js/icontent/custom.js") {
-                    doc.body.removeChild(existingScripts[i]);
+                //override default theme if required
+                if(this.props.theme) {
+                    let themeCss = "css/icontent/" + this.props.theme + "/bootstrap.min.css";
+                    ReactDOM.render(
+                        <>
+                            <link rel="stylesheet" href={themeCss} media="screen"/>
+                            <link rel="stylesheet" href="css/icontent/icontent.css" media="screen"/>
+                        </>, doc.head);
                 }
+
+                let buffer = doc.createElement("div");
+
+                ReactDOM.render(<>
+                    {this.props.children}
+                    </>, buffer);
+
+                doc.body.appendChild(buffer);
+
+                let existingScripts = doc.body.getElementsByTagName("script");
+                console.log('existing scripts leng' + existingScripts.length);
+                for (let i = existingScripts.length; i--; i === 0) {
+                    if (existingScripts[i].src === "js/icontent/custom.js") {
+                        doc.body.removeChild(existingScripts[i]);
+                    }
+                }
+
+                const script = document.createElement("script");
+                script.src = "js/icontent/custom.js";
+                script.async = false;
+                doc.body.appendChild(script);
+            } else {
+                setTimeout(this.renderFrameContents, 0);
             }
-
-            const script = document.createElement("script");
-            script.src = "js/icontent/custom.js";
-            script.async = false;
-            doc.body.appendChild(script);
-
-        } else {
-            setTimeout(this.renderFrameContents, 0);
+        } catch(e) {
+            // setTimeout(this.renderFrameContents, 1000);
+            //intentionally left blank
         }
     }
 
