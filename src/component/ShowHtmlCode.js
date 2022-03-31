@@ -13,6 +13,19 @@ const inputTextStyle = {
 export default function ShowHtmlCode(props) {
     const [show, setShow] = useState(false);
 
+    let themeCss= `css/icontent/${props.theme}/bootstrap.min.css`;
+
+    let previewHtml =  `<html lang="en">
+                        <head>
+                            <link rel="stylesheet" href="${themeCss}" media="screen"/>
+                        </head>
+                        <body>${props.html}
+                        <script src="js/icontent/jquery.min.js"></script>
+                        <script src="js/icontent/popper.min.js"></script>
+                        <script src="js/icontent/bootstrap.min.js"></script>
+                        </body>
+                        </html>`;
+
     return (
         <>
             <Button variant="success" onClick={() => setShow(true)}>
@@ -32,7 +45,7 @@ export default function ShowHtmlCode(props) {
                 </Modal.Header>
                 <Modal.Body>
                     <textarea style={inputTextStyle}>
-                        {props.html}
+                        {previewHtml}
                     </textarea>
                     <p>
                         <Container>
@@ -43,7 +56,7 @@ export default function ShowHtmlCode(props) {
                             </Row>
                             <Row>
                                 <Col sm={12}>
-                                    <a href="css/icontent/bootstrap.min.css">css/icontent/bootstrap.min.css</a>
+                                    <a href={themeCss}>{themeCss}</a>
                                 </Col>
                             </Row>
                             <Row>
@@ -58,7 +71,7 @@ export default function ShowHtmlCode(props) {
                             </Row>
                             <Row>
                                 <Col sm={12}>
-                                    <a href="js/icontent/{props.theme}/bootstrap.min.js">js/icontent/{props.theme}/bootstrap.min.js</a>
+                                    <a href="js/icontent/bootstrap.min.js">js/icontent/bootstrap.min.js</a>
                                 </Col>
                             </Row>
 

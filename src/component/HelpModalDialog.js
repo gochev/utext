@@ -16,6 +16,7 @@ export default function HelpModalDialog() {
                 show={show}
                 onHide={() => setShow(false)}
                 dialogClassName="modal-90w"
+                animation={false}
                 aria-labelledby="example-custom-modal-styling-title"
             >
                 <Modal.Header closeButton>
@@ -152,6 +153,14 @@ password: *___
                     <MiniUTextEditor height={200} text={`
 % 20 %
 % 80 %
+`}/>
+                    <h4> 23. Tooltips </h4>
+                    <MiniUTextEditor height={200} text={`
+[btn]^ you can put tooltips on elements^
+[btn]> depending on the direction of the 'v' >
+[btn]< you can configure on which side the tooltip to be shown 'v' <
+[btn]v I am a tooltip!v
+
 `}/>
                 </Modal.Body>
             </Modal>

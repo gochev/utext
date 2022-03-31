@@ -29,7 +29,7 @@ export default class MiniUTextEditor extends React.Component {
         setTimeout(function () {
             this.setState({...this.state,
                 html:parseTextAndGetHtml(this.state.text)});
-        }.bind(this), 4500);
+        }.bind(this), 5000);
     }
 
     render() {

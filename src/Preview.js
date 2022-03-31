@@ -16,7 +16,6 @@ export default class Preview extends Component {
     }
 
     renderFrameContents() {
-        console.log("renderFrameContents");
         try {
             let doc = ReactDOM.findDOMNode(this).contentDocument;
             doc.body.innerHTML = "";
@@ -42,7 +41,6 @@ export default class Preview extends Component {
                 doc.body.appendChild(buffer);
 
                 let existingScripts = doc.body.getElementsByTagName("script");
-                console.log('existing scripts leng' + existingScripts.length);
                 for (let i = existingScripts.length; i--; i === 0) {
                     if (existingScripts[i].src === "js/icontent/custom.js") {
                         doc.body.removeChild(existingScripts[i]);

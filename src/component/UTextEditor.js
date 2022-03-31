@@ -117,7 +117,6 @@ export default function UTextEditor () {
                         return 'Failed to get gist';
                     }
                 }).then(function (data) {
-                console.log("data: ", data);
                 setText(data);
                 updateHtmlPreview(data);
                 setGistMessage("Loading gist successful");
@@ -237,12 +236,13 @@ export default function UTextEditor () {
                                 {/*            <p dangerouslySetInnerHTML={{__html: html || "" }}/>*/}
                                 {/*        </div>*/}
                                 {/*    </div>*/}
-                                {/*</div>*/}
+                                </div>
                                 {/*<div className="row">*/}
                                 {/*    <div className="col-sm-10">*/}
                                 {/*        <p dangerouslySetInnerHTML={{__html: html || "" }}/>*/}
                                 {/*    </div>*/}
-                                </div>
+                                {/*</div>*/}
+                                {/*</div>*/}
                             </Preview>
                         </div>
                     </div>

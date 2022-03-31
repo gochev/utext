@@ -1,5 +1,5 @@
 $(function(){ //document ready
-    console.log('jquery ready');
+    // console.log('jquery ready');
     // $('.navbar-collapse').collapse('hide');
     $('[data-toggle="popover"]').popover()
 });
