@@ -144,7 +144,8 @@ export default function UTextEditor () {
                 <Row>
                     <Col>
                         Type your uTeXt bellow, it is like markdown but on steroids. <br/>
-                        You want to learn more about the syntax <HelpModalDialog/>
+                        You want to learn more about the syntax<HelpModalDialog/>  <br/>
+                        You can embed this into your editor by importing 
                         <Toast style={{
                                 position: 'fixed',
                                 top: 15,
